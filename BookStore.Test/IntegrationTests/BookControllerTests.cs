@@ -3,11 +3,17 @@ using System.Net.Http.Json;
 using Bookstore.Application.DTO;
 using FluentAssertions;
 
-
 namespace BookStore.Test.IntegrationTests
 {
+    /// <summary>
+    /// Integration tests for the BookController.
+    /// </summary>
     public class BookControllerTests : IClassFixture<BookStoreWbApplicationFactory>
     {
+        /// <summary>
+        /// Test for getting a book by a valid ISBN.
+        /// </summary>
+        /// <returns>A task representing the asynchronous operation.</returns>
         [Fact]
         public async Task GetBook_ByValidIsbn_Returns_Ok()
         {
@@ -36,6 +42,10 @@ namespace BookStore.Test.IntegrationTests
             }
         }
 
+        /// <summary>
+        /// Test for getting a book by an invalid ISBN.
+        /// </summary>
+        /// <returns>A task representing the asynchronous operation.</returns>
         [Fact]
         public async Task GetBook_ByInvalidIsbn_Returns_NotFound()
         {
@@ -61,6 +71,10 @@ namespace BookStore.Test.IntegrationTests
             }
         }
 
+        /// <summary>
+        /// Test for adding a book with valid data.
+        /// </summary>
+        /// <returns>A task representing the asynchronous operation.</returns>
         [Fact]
         public async Task AddBook_WithValidData_Returns_Created()
         {
@@ -97,6 +111,10 @@ namespace BookStore.Test.IntegrationTests
             }
         }
 
+        /// <summary>
+        /// Test for adding a book with an invalid ISBN.
+        /// </summary>
+        /// <returns>A task representing the asynchronous operation.</returns>
         [Fact]
         public async Task AddBook_WithInvalidIsbn_Returns_BadRequest()
         {
@@ -129,6 +147,10 @@ namespace BookStore.Test.IntegrationTests
             }
         }
 
+        /// <summary>
+        /// Test for editing a book with a valid ISBN.
+        /// </summary>
+        /// <returns>A task representing the asynchronous operation.</returns>
         [Fact]
         public async Task EditBook_WithValidIsbn_Returns_NoContent()
         {
@@ -165,6 +187,10 @@ namespace BookStore.Test.IntegrationTests
             }
         }
 
+        /// <summary>
+        /// Test for editing a book with an invalid ISBN.
+        /// </summary>
+        /// <returns>A task representing the asynchronous operation.</returns>
         [Fact]
         public async Task EditBook_WithInvalidIsbn_Returns_BadRequest()
         {
@@ -198,6 +224,10 @@ namespace BookStore.Test.IntegrationTests
             }
         }
 
+        /// <summary>
+        /// Test for deleting a book with a valid ISBN.
+        /// </summary>
+        /// <returns>A task representing the asynchronous operation.</returns>
         [Fact]
         public async Task DeleteBook_WithValidIsbn_Returns_NoContent()
         {
@@ -223,6 +253,10 @@ namespace BookStore.Test.IntegrationTests
             }
         }
 
+        /// <summary>
+        /// Test for generating a report.
+        /// </summary>
+        /// <returns>A task representing the asynchronous operation.</returns>
         [Fact]
         public async Task GetReport_Returns_ReportContent()
         {
@@ -248,6 +282,12 @@ namespace BookStore.Test.IntegrationTests
             }
         }
 
+        /// <summary>
+        /// Adds a book to the XML file.
+        /// </summary>
+        /// <param name="isbn">The ISBN of the book to add.</param>
+        /// <param name="client">The HTTP client to use.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
         private async Task AddBookToXMLFile(string isbn, HttpClient client)
         {
             var bookDto = new BookDTO
@@ -274,6 +314,12 @@ namespace BookStore.Test.IntegrationTests
             }
         }
 
+        /// <summary>
+        /// Deletes a book from the XML file.
+        /// </summary>
+        /// <param name="isbn">The ISBN of the book to delete.</param>
+        /// <param name="client">The HTTP client to use.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
         private async Task DeleteBookFromXMLFile(string isbn, HttpClient client)
         {
             var response = await client.DeleteAsync($"/api/book/{isbn}");

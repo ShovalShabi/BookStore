@@ -9,12 +9,18 @@ using Microsoft.AspNetCore.Http;
 
 namespace BookStore.Test.UnitTests
 {
+    /// <summary>
+    /// Unit tests for the BookService class.
+    /// </summary>
     public class BookServiceTests
     {
         private Mock<IBookRepository> _bookRepositoryMock;
         private Mock<ILogger<BookService>> _loggerMock;
         private IBookService _bookService;
 
+        /// <summary>
+        /// Initializes the mocks and the BookService instance.
+        /// </summary>
         public BookServiceTests()
         {
             _bookRepositoryMock = new Mock<IBookRepository>();
@@ -22,6 +28,9 @@ namespace BookStore.Test.UnitTests
             _bookService = new BookService(_bookRepositoryMock.Object, new ReportGenerator(), _loggerMock.Object);
         }
 
+        /// <summary>
+        /// Tests that GetBookByIsbn throws an exception for null or empty ISBN.
+        /// </summary>
         [Fact]
         public void GetBookByIsbn_NullOrEmptyIsbn()
         {
@@ -37,6 +46,9 @@ namespace BookStore.Test.UnitTests
                 Times.Exactly(2));
         }
 
+        /// <summary>
+        /// Tests that GetBookByIsbn retrieves the book when it exists.
+        /// </summary>
         [Fact]
         public void GetBookByIsbn_ShouldRetrieveBook_WhenExists()
         {
@@ -56,6 +68,9 @@ namespace BookStore.Test.UnitTests
                 Times.Once);
         }
 
+        /// <summary>
+        /// Tests that GetBookByIsbn throws an exception when the book is not found.
+        /// </summary>
         [Fact]
         public void GetBookByIsbn_ShouldThrowException_WhenNotFound()
         {
@@ -71,6 +86,9 @@ namespace BookStore.Test.UnitTests
                 Times.Once);
         }
 
+        /// <summary>
+        /// Tests that AddBook adds a book when it does not already exist.
+        /// </summary>
         [Fact]
         public void AddBook_ShouldAddBook_WhenNotExists()
         {
@@ -100,6 +118,9 @@ namespace BookStore.Test.UnitTests
                 Times.Once);
         }
 
+        /// <summary>
+        /// Tests that AddBook throws an exception for an invalid ISBN length.
+        /// </summary>
         [Fact]
         public void AddBook_InvalidIsbnLength()
         {
@@ -125,6 +146,9 @@ namespace BookStore.Test.UnitTests
                 Times.Once);
         }
 
+        /// <summary>
+        /// Tests that AddBook throws an exception for a null or empty ISBN.
+        /// </summary>
         [Fact]
         public void AddBook_NullOrEmptyIsbn()
         {
@@ -150,6 +174,9 @@ namespace BookStore.Test.UnitTests
                 Times.Once);
         }
 
+        /// <summary>
+        /// Tests that AddBook returns the existing book if it already exists.
+        /// </summary>
         [Fact]
         public void AddBook_ShouldReturnExistingBook_WhenAlreadyExists()
         {
@@ -199,7 +226,9 @@ namespace BookStore.Test.UnitTests
                 Times.Once); // Verify logging occurred once
         }
 
-
+        /// <summary>
+        /// Tests that EditBook updates the book when it exists.
+        /// </summary>
         [Fact]
         public void EditBook_ShouldUpdateBook_WhenExists()
         {
@@ -239,6 +268,9 @@ namespace BookStore.Test.UnitTests
                 Times.Once);
         }
 
+        /// <summary>
+        /// Tests that EditBook throws an exception when the book does not exist.
+        /// </summary>
         [Fact]
         public void EditBook_ShouldThrowException_WhenNotExists()
         {
@@ -266,6 +298,9 @@ namespace BookStore.Test.UnitTests
                 Times.Once);
         }
 
+        /// <summary>
+        /// Tests that EditBook throws an exception for a null or empty ISBN.
+        /// </summary>
         [Fact]
         public void EditBook_NullOrEmptyIsbn_ThrowsException()
         {
@@ -293,6 +328,9 @@ namespace BookStore.Test.UnitTests
                 Times.Once);
         }
 
+        /// <summary>
+        /// Tests that DeleteBook deletes the book.
+        /// </summary>
         [Fact]
         public void DeleteBook_ShouldDeleteBook()
         {
@@ -309,6 +347,9 @@ namespace BookStore.Test.UnitTests
                 Times.Once);
         }
 
+        /// <summary>
+        /// Tests that GenerateReport generates a report.
+        /// </summary>
         [Fact]
         public void GenerateReport_ShouldGenerateReport()
         {
@@ -331,7 +372,9 @@ namespace BookStore.Test.UnitTests
                 Times.Once);
         }
 
-        // After each test cleanup
+        /// <summary>
+        /// Cleanup method executed after each test.
+        /// </summary>
         public void AfterEach()
         {
             _bookRepositoryMock.Reset();
