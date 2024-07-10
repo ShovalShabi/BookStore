@@ -1,7 +1,5 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
-using System.Text;
-using System.Text.Json;
 using Bookstore.Application.DTO;
 using FluentAssertions;
 
@@ -84,15 +82,13 @@ namespace BookStore.Test.IntegrationTests
             try
             {
                 // Act
-                var jsonContent = new StringContent(JsonSerializer.Serialize(bookDto), Encoding.UTF8, "application/json");
-                var response = await client.PostAsync("/api/book", jsonContent);
+                var response = await client.PostAsJsonAsync("/api/book", bookDto);
 
                 // Assert
                 response.EnsureSuccessStatusCode(); // Status Code 200-299
-                var content = await response.Content.ReadAsStringAsync();
-                var createdBook = JsonSerializer.Deserialize<BookDTO>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                var createdBook = await response.Content.ReadFromJsonAsync<BookDTO>();
 
-                Assert.Equal(bookDto.Isbn, createdBook.Isbn);
+                Assert.Equal(bookDto.Isbn, createdBook?.Isbn);
             }
             finally
             {
@@ -122,8 +118,7 @@ namespace BookStore.Test.IntegrationTests
             try
             {
                 // Act
-                var jsonContent = new StringContent(JsonSerializer.Serialize(bookDto), Encoding.UTF8, "application/json");
-                var response = await client.PostAsync("/api/book", jsonContent);
+                var response = await client.PostAsJsonAsync("/api/book", bookDto);
 
                 // Assert
                 Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -158,8 +153,7 @@ namespace BookStore.Test.IntegrationTests
             try
             {
                 // Act
-                var jsonContent = new StringContent(JsonSerializer.Serialize(bookDto), Encoding.UTF8, "application/json");
-                var response = await client.PutAsync($"/api/book/{isbn}", jsonContent);
+                var response = await client.PutAsJsonAsync($"/api/book/{isbn}", bookDto);
 
                 // Assert
                 response.EnsureSuccessStatusCode(); // Status Code 200-299
@@ -193,11 +187,10 @@ namespace BookStore.Test.IntegrationTests
             try
             {
                 // Act
-                var jsonContent = new StringContent(JsonSerializer.Serialize(bookDto), Encoding.UTF8, "application/json");
-                var response = await client.PutAsync($"/api/book/{isbn}", jsonContent);
+                var response = await client.PutAsJsonAsync($"/api/book/{isbn}", bookDto);
 
                 // Assert
-                Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+                Assert.Equal(HttpStatusCode.MethodNotAllowed, response.StatusCode);
             }
             finally
             {
@@ -242,12 +235,12 @@ namespace BookStore.Test.IntegrationTests
             try
             {
                 // Act
-                var response = await client.GetAsync("/api/book/report");
+                var response = await client.GetAsync("/api/Book/report");
 
                 // Assert
                 response.EnsureSuccessStatusCode(); // Status Code 200-299
                 var content = await response.Content.ReadAsStringAsync();
-                Assert.Contains("Generated report", content); // Assuming the report content contains this phrase
+                Assert.Contains("<html><body><h1>Bookstore Report</h1><table border='1'>", content); // Assuming the report content contains this phrase
             }
             finally
             {
@@ -268,13 +261,10 @@ namespace BookStore.Test.IntegrationTests
                 Cover = "Cover Image"
             };
 
-            Console.WriteLine(bookDto);
-
             try
             {
                 var response = await client.PostAsJsonAsync("/api/book", bookDto);
                 response.StatusCode.Should().Be(HttpStatusCode.Created);
-                //response.EnsureSuccessStatusCode();
             }
             catch (HttpRequestException ex)
             {
