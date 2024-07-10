@@ -51,7 +51,6 @@ This repository contains a .NET application for managing books. It includes func
 
 ### Using Terminal
 
-**Running Unit Tests:**
    - Under the main directory of this repository execute the following command:
      ```
      dotnet test
