@@ -2,15 +2,27 @@
 using Bookstore.Domain.Repositories;
 using System.Xml.Linq;
 
+/// <summary>
+/// Repository implementation for interacting with books stored in XML format.
+/// </summary>
 public class BookRepository : IBookRepository
 {
     private readonly XmlDataContext _context;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="BookRepository"/> class.
+    /// </summary>
+    /// <param name="context">The XML data context to access XML storage.</param>
     public BookRepository(XmlDataContext context)
     {
         _context = context;
     }
 
+    /// <summary>
+    /// Retrieves a book by its ISBN.
+    /// </summary>
+    /// <param name="isbn">The ISBN of the book to retrieve.</param>
+    /// <returns>The <see cref="Book"/> object if found; otherwise, <c>null</c>.</returns>
     public Book GetByIsbn(string isbn)
     {
         var document = _context.LoadXml();
@@ -31,6 +43,10 @@ public class BookRepository : IBookRepository
         };
     }
 
+    /// <summary>
+    /// Adds a new book record.
+    /// </summary>
+    /// <param name="book">The <see cref="Book"/> object to add.</param>
     public void Add(Book book)
     {
         var document = _context.LoadXml();
@@ -49,6 +65,11 @@ public class BookRepository : IBookRepository
         _context.SaveXml(document);
     }
 
+    /// <summary>
+    /// Updates an existing book record identified by ISBN.
+    /// </summary>
+    /// <param name="isbn">The ISBN of the book to update.</param>
+    /// <param name="book">The updated <see cref="Book"/> object.</param>
     public void Update(string isbn, Book book)
     {
         var document = _context.LoadXml();
@@ -71,6 +92,10 @@ public class BookRepository : IBookRepository
         }
     }
 
+    /// <summary>
+    /// Deletes a book record by its ISBN.
+    /// </summary>
+    /// <param name="isbn">The ISBN of the book to delete.</param>
     public void Delete(string isbn)
     {
         var document = _context.LoadXml();
@@ -84,6 +109,10 @@ public class BookRepository : IBookRepository
         }
     }
 
+    /// <summary>
+    /// Retrieves all book records.
+    /// </summary>
+    /// <returns>An enumerable collection of all <see cref="Book"/> objects.</returns>
     public IEnumerable<Book> GetAll()
     {
         var document = _context.LoadXml();

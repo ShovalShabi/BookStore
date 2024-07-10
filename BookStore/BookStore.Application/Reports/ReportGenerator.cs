@@ -3,6 +3,11 @@ using System.Text;
 
 public class ReportGenerator
 {
+    /// <summary>
+    /// Generates an HTML report for a collection of books.
+    /// </summary>
+    /// <param name="books">An enumerable collection of <see cref="Book"/> objects.</param>
+    /// <returns>A string containing the HTML report.</returns>
     public string GenerateHtmlReport(IEnumerable<Book> books)
     {
         var htmlBuilder = new StringBuilder();

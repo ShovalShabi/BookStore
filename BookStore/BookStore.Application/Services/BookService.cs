@@ -10,6 +10,12 @@ public class BookService : IBookService
     private readonly ReportGenerator _reportGenerator;
     private readonly ILogger<BookService> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="BookService"/> class.
+    /// </summary>
+    /// <param name="bookRepository">The book repository instance.</param>
+    /// <param name="reportGenerator">The report generator instance.</param>
+    /// <param name="logger">The logger instance.</param>
     public BookService(IBookRepository bookRepository, ReportGenerator reportGenerator, ILogger<BookService> logger)
     {
         _bookRepository = bookRepository;
@@ -17,6 +23,12 @@ public class BookService : IBookService
         _logger = logger;
     }
 
+    /// <summary>
+    /// Retrieves a book by its ISBN.
+    /// </summary>
+    /// <param name="isbn">The ISBN of the book to retrieve.</param>
+    /// <returns>A <see cref="BookDTO"/> representing the book.</returns>
+    /// <exception cref="BookServiceException">Thrown when the book is not found.</exception>
     public BookDTO GetBookByIsbn(string isbn)
     {
         var book = _bookRepository.GetByIsbn(isbn);
@@ -29,6 +41,12 @@ public class BookService : IBookService
         return book.ToDTO();
     }
 
+    /// <summary>
+    /// Adds a new book record.
+    /// </summary>
+    /// <param name="bookDto">The <see cref="BookDTO"/> representing the book to add.</param>
+    /// <returns>A <see cref="BookDTO"/> representing the added book.</returns>
+    /// <exception cref="BookServiceException">Thrown when the ISBN is invalid or the book already exists.</exception>
     public BookDTO AddBook(BookDTO bookDto)
     {
         if (bookDto.Isbn == null)
@@ -66,6 +84,12 @@ public class BookService : IBookService
         return book.ToDTO();
     }
 
+    /// <summary>
+    /// Edits an existing book record identified by ISBN.
+    /// </summary>
+    /// <param name="isbn">The ISBN of the book to edit.</param>
+    /// <param name="bookDto">The <see cref="BookDTO"/> representing the updated book details.</param>
+    /// <exception cref="BookServiceException">Thrown when the book is not found.</exception>
     public void EditBook(string isbn, BookDTO bookDto)
     {
         var book = _bookRepository.GetByIsbn(isbn);
@@ -89,12 +113,20 @@ public class BookService : IBookService
         _logger.LogInformation($"Updated book with ISBN: {isbn}");
     }
 
+    /// <summary>
+    /// Deletes a book record by its ISBN.
+    /// </summary>
+    /// <param name="isbn">The ISBN of the book to delete.</param>
     public void DeleteBook(string isbn)
     {
         _bookRepository.Delete(isbn);
         _logger.LogInformation($"Deleted book with ISBN: {isbn}");
     }
 
+    /// <summary>
+    /// Generates an HTML report of all books.
+    /// </summary>
+    /// <returns>A string containing the HTML report.</returns>
     public string GenerateReport()
     {
         var books = _bookRepository.GetAll();

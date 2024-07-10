@@ -3,21 +3,42 @@ using Bookstore.Application.DTO;
 
 namespace Bookstore.Application.Interfaces
 {
+    /// <summary>
+    /// Provides methods for managing book records.
+    /// </summary>
     public interface IBookService
     {
-        // Retrieves a book by its ISBN.
+        /// <summary>
+        /// Retrieves a book by its ISBN.
+        /// </summary>
+        /// <param name="isbn">The ISBN of the book.</param>
+        /// <returns>A <see cref="BookDTO"/> representing the book.</returns>
         BookDTO GetBookByIsbn(string isbn);
 
-        // Adds a new book record.
+        /// <summary>
+        /// Adds a new book record.
+        /// </summary>
+        /// <param name="bookDto">The data transfer object containing book details.</param>
+        /// <returns>A <see cref="BookDTO"/> representing the added book.</returns>
         BookDTO AddBook(BookDTO bookDto);
 
-        // Edits an existing book record identified by ISBN.
+        /// <summary>
+        /// Edits an existing book record identified by ISBN.
+        /// </summary>
+        /// <param name="isbn">The ISBN of the book to edit.</param>
+        /// <param name="bookDto">The data transfer object containing updated book details.</param>
         void EditBook(string isbn, BookDTO bookDto);
 
-        // Deletes a book record by its ISBN.
+        /// <summary>
+        /// Deletes a book record by its ISBN.
+        /// </summary>
+        /// <param name="isbn">The ISBN of the book to delete.</param>
         void DeleteBook(string isbn);
 
-        // Generates an HTML report of all books.
+        /// <summary>
+        /// Generates an HTML report of all books.
+        /// </summary>
+        /// <returns>A string containing the HTML report.</returns>
         string GenerateReport();
     }
 }
