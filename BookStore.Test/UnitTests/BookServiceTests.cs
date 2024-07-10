@@ -5,6 +5,7 @@ using Bookstore.Application.Interfaces;
 using Bookstore.Domain.Entities;
 using BookStore.BookStore.Application.Utils;
 using Bookstore.Application.DTO;
+using Microsoft.AspNetCore.Http;
 
 namespace BookStore.Test.UnitTests
 {
@@ -19,6 +20,21 @@ namespace BookStore.Test.UnitTests
             _bookRepositoryMock = new Mock<IBookRepository>();
             _loggerMock = new Mock<ILogger<BookService>>();
             _bookService = new BookService(_bookRepositoryMock.Object, new ReportGenerator(), _loggerMock.Object);
+        }
+
+        [Fact]
+        public void GetBookByIsbn_NullOrEmptyIsbn()
+        {
+            // Act, Assert
+            var exception = Assert.Throws<BookServiceException>(() => _bookService.GetBookByIsbn(null));
+            Assert.Equal("The book does not exist.", exception.Message);
+
+            exception = Assert.Throws<BookServiceException>(() => _bookService.GetBookByIsbn(""));
+            Assert.Equal("The book does not exist.", exception.Message);
+
+            _loggerMock.Verify(
+                x => x.Log(LogLevel.Error, It.IsAny<EventId>(), It.Is<It.IsAnyType>((v, t) => true), It.IsAny<Exception>(), It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)),
+                Times.Exactly(2));
         }
 
         [Fact]
@@ -81,6 +97,56 @@ namespace BookStore.Test.UnitTests
             _bookRepositoryMock.Verify(repo => repo.Add(It.IsAny<Book>()), Times.Once);
             _loggerMock.Verify(
                 x => x.Log(LogLevel.Information, It.IsAny<EventId>(), It.Is<It.IsAnyType>((v, t) => true), It.IsAny<Exception>(), It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)),
+                Times.Once);
+        }
+
+        [Fact]
+        public void AddBook_InvalidIsbnLength()
+        {
+            // Arrange
+            var bookDto = new BookDTO
+            {
+                Isbn = "123456789", // Invalid length (9 characters)
+                Title = "Test Book",
+                Authors = "Author One, Author Two",
+                Year = 2021,
+                Price = 19.99m,
+                Category = "Fiction",
+                Cover = "Cover Image"
+            };
+
+            // Act, Assert
+            var exception = Assert.Throws<BookServiceException>(() => _bookService.AddBook(bookDto));
+            Assert.Equal("ISBN code is not valid.", exception.Message);
+
+            _bookRepositoryMock.Verify(repo => repo.Add(It.IsAny<Book>()), Times.Never);
+            _loggerMock.Verify(
+                x => x.Log(LogLevel.Error, It.IsAny<EventId>(), It.Is<It.IsAnyType>((v, t) => true), It.IsAny<Exception>(), It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)),
+                Times.Once);
+        }
+
+        [Fact]
+        public void AddBook_NullOrEmptyIsbn()
+        {
+            // Arrange
+            var bookDto = new BookDTO
+            {
+                Isbn = "", // Empty ISBN
+                Title = "Test Book",
+                Authors = "Author One, Author Two",
+                Year = 2021,
+                Price = 19.99m,
+                Category = "Fiction",
+                Cover = "Cover Image"
+            };
+
+            // Act, Assert
+            var exception = Assert.Throws<BookServiceException>(() => _bookService.AddBook(bookDto));
+            Assert.Equal("ISBN code is not valid.", exception.Message);
+
+            _bookRepositoryMock.Verify(repo => repo.Add(It.IsAny<Book>()), Times.Never);
+            _loggerMock.Verify(
+                x => x.Log(LogLevel.Error, It.IsAny<EventId>(), It.Is<It.IsAnyType>((v, t) => true), It.IsAny<Exception>(), It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)),
                 Times.Once);
         }
 
@@ -195,6 +261,33 @@ namespace BookStore.Test.UnitTests
             var exception = Assert.Throws<BookServiceException>(() => _bookService.EditBook(isbn, bookDto));
             Assert.Equal("The book does not exist.", exception.Message);
             _bookRepositoryMock.Verify(repo => repo.Update(isbn, It.IsAny<Book>()), Times.Never);
+            _loggerMock.Verify(
+                x => x.Log(LogLevel.Error, It.IsAny<EventId>(), It.Is<It.IsAnyType>((v, t) => true), It.IsAny<Exception>(), It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)),
+                Times.Once);
+        }
+
+        [Fact]
+        public void EditBook_NullOrEmptyIsbn_ThrowsException()
+        {
+            // Arrange
+            var isbn = ""; // Empty ISBN
+            var bookDto = new BookDTO
+            {
+                Title = "Updated Test Book",
+                Authors = "Author One, Author Two",
+                Year = 2022,
+                Price = 29.99m,
+                Category = "Non-fiction",
+                Cover = "Updated Cover Image"
+            };
+
+            _bookRepositoryMock.Setup(repo => repo.GetByIsbn(isbn)).Returns((Book)null);
+
+            // Act, Assert
+            var exception = Assert.Throws<BookServiceException>(() => _bookService.EditBook(isbn, bookDto));
+            Assert.Equal("The book does not exist.", exception.Message);
+
+            _bookRepositoryMock.Verify(repo => repo.Update(It.IsAny<string>(), It.IsAny<Book>()), Times.Never);
             _loggerMock.Verify(
                 x => x.Log(LogLevel.Error, It.IsAny<EventId>(), It.Is<It.IsAnyType>((v, t) => true), It.IsAny<Exception>(), It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)),
                 Times.Once);
