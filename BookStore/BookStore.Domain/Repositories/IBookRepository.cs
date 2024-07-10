@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Bookstore.Domain.Entities;
+﻿using Bookstore.Domain.Entities;
 
 namespace Bookstore.Domain.Repositories
 {
