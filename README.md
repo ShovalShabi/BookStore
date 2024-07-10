@@ -111,3 +111,7 @@ The application exposes several endpoints through the controller API. Here are s
   - Generates an HTML report of all books.
 
 Make sure to adjust paths (`/api/book` and `/api/book/report`) and payload data according to your application's requirements and endpoints structure.
+
+**P.S**
+For better understading of the HTML element you can enter into [this url](https://www.freeformatter.com/html-formatter.html#before-output) and paste the server's response.
+For enhancing the visualization of the HTML element you can enter into [this url](https://html.onlineviewer.net/) and paste the server's response/the formatted text from the link from above this line.
