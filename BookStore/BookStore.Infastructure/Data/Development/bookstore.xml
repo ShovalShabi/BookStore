@@ -25,4 +25,12 @@
     <year>2003</year>
     <price>39.95</price>
   </book>
+  <book category="Advanture" cover="">
+    <isbn>9051234585327</isbn>
+    <title>Life Of PI</title>
+    <year>2001</year>
+    <price>50.90</price>
+    <author>ShovalShabi</author>
+    <author>Code Oasis</author>
+  </book>
 </bookstore>
