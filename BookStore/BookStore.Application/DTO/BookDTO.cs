@@ -10,6 +10,11 @@
         private string _category;
         private string _cover; // Optional
 
+        // Empty constructor
+        public BookDTO()
+        {
+        }
+
         // Full constructor that initializes all properties
         public BookDTO(string isbn, string title, string authors, int year, decimal price, string category, string cover = null)
         {
