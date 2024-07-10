@@ -1,5 +1,6 @@
 ﻿using Bookstore.Application.DTO;
 using Bookstore.Application.Interfaces;
+using BookStore.BookStore.Application.Utils;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -15,28 +16,80 @@ public class BookController : ControllerBase
     }
 
     [HttpGet("{isbn}")]
-    public ActionResult<BookDto> GetBook(string isbn)
+    public ActionResult<BookDTO> GetBook(string isbn)
     {
-        var book = _bookService.GetBookByIsbn(isbn);
-        if (book == null)
+        try
         {
-            return NotFound();
+            var book = _bookService.GetBookByIsbn(isbn);
+            return Ok(book);
+
         }
-        return Ok(book);
+        catch (BookServiceException ex)
+        {
+            switch (ex.ErrorCode)
+            {
+                case StatusCodes.Status404NotFound:
+                    return NotFound(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status404NotFound,
+                        Title = "Not Found",
+                        Detail = ex.Message
+                    });
+                default:
+                    return Problem(detail: ex.Message, statusCode: StatusCodes.Status500InternalServerError);
+            }
+        }
     }
 
     [HttpPost]
-    public ActionResult AddBook([FromBody] BookDto bookDto)
+    public ActionResult<BookDTO> AddBook(BookDTO bookDto)
     {
-        _bookService.AddBook(bookDto);
-        return CreatedAtAction(nameof(GetBook), new { isbn = bookDto.Isbn }, bookDto);
+        try
+        {
+            var book = _bookService.AddBook(bookDto);
+            return CreatedAtAction(nameof(AddBook), new { isbn = book.Isbn }, book);
+        }
+        catch (BookServiceException ex)
+        {
+            switch (ex.ErrorCode)
+            {
+                case StatusCodes.Status400BadRequest:
+                    return BadRequest(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status400BadRequest,
+                        Title = "Bad Request",
+                        Detail = ex.Message
+                    });
+                default:
+                    return Problem(detail: ex.Message, statusCode: StatusCodes.Status500InternalServerError);
+            }
+        }
     }
 
     [HttpPut("{isbn}")]
-    public ActionResult EditBook(string isbn, [FromBody] BookDto bookDto)
+    public ActionResult EditBook(string isbn, [FromBody] BookDTO bookDto)
     {
-        _bookService.EditBook(isbn, bookDto);
-        return NoContent();
+        try
+        {
+            _bookService.EditBook(isbn, bookDto);
+            return NoContent();
+        }
+        catch (BookServiceException ex)
+        {
+            switch (ex.ErrorCode)
+            {
+                case StatusCodes.Status400BadRequest:
+                    return BadRequest(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status400BadRequest,
+                        Title = "Bad Request",
+                        Detail = ex.Message
+                    });
+                default:
+                    return Problem(detail: ex.Message, statusCode: StatusCodes.Status500InternalServerError);
+            }
+        }
+
     }
 
     [HttpDelete("{isbn}")]

@@ -6,13 +6,13 @@ namespace Bookstore.Application.Interfaces
     public interface IBookService
     {
         // Retrieves a book by its ISBN.
-        BookDto GetBookByIsbn(string isbn);
+        BookDTO GetBookByIsbn(string isbn);
 
         // Adds a new book record.
-        void AddBook(BookDto bookDto);
+        BookDTO AddBook(BookDTO bookDto);
 
         // Edits an existing book record identified by ISBN.
-        void EditBook(string isbn, BookDto bookDto);
+        void EditBook(string isbn, BookDTO bookDto);
 
         // Deletes a book record by its ISBN.
         void DeleteBook(string isbn);
