@@ -51,20 +51,11 @@ This repository contains a .NET application for managing books. It includes func
 
 ### Using Terminal
 
-1. **Running Unit Tests:**
-   - Navigate to the directory containing the unit tests project.
-   - Execute the following command:
+**Running Unit Tests:**
+   - Under the main directory of this repository execute the following command:
      ```
      dotnet test
      ```
-
-2. **Running Integration Tests:**
-   - Navigate to the directory containing the integration tests project.
-   - Execute the following command:
-     ```
-     dotnet test
-     ```
-   - Ensure any necessary configurations or environment variables are set before running.
 
 ## Controller API
 
@@ -72,14 +63,14 @@ The application exposes several endpoints through the controller API. Here are s
 
 - **GET `/api/book/{isbn}`**
   - Retrieves a book by its ISBN.
-  - Example: `http://localhost:8080/api/book/978-3-16-148410-0`
+  - Example: `http://localhost:8080/api/book/9783161484100`
 
 - **POST `/api/book`**
   - Adds a new book.
   - Example payload:
     ```json
     {
-      "isbn": "978-3-16-148410-0",
+      "isbn": "9783161484100",
       "title": "Sample Book",
       "authors": "John Doe, Jane Smith",
       "year": 2024,
@@ -105,7 +96,7 @@ The application exposes several endpoints through the controller API. Here are s
 
 - **DELETE `/api/book/{isbn}`**
   - Deletes a book by its ISBN.
-  - Example: `http://localhost:8080/api/book/978-3-16-148410-0`
+  - Example: `http://localhost:8080/api/book/9783161484100`
 
 - **GET `/api/book/report`**
   - Generates an HTML report of all books.
