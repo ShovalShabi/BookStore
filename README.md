@@ -9,6 +9,7 @@ This repository contains a .NET application for managing books. It includes func
 1. **Prerequisites:**
    - Install [.NET 6 SDK](https://dotnet.microsoft.com/download/dotnet/6.0).
    - Install [Visual Studio 2022](https://visualstudio.microsoft.com/vs/).
+   - Install [Docker Desktop](https://www.docker.com/products/docker-desktop).
 
 2. **Setup:**
    - Clone the repository to your local machine.
@@ -18,36 +19,13 @@ This repository contains a .NET application for managing books. It includes func
    - Set the startup project to the main project containing `Program.cs`.
    - Press F5 or click on the "Start" button to build and run the application.
 
-### Using Docker
-
-1. **Prerequisites:**
-   - Install [Docker Desktop](https://www.docker.com/products/docker-desktop).
-
-2. **Building and Running the Docker Container:**
-   - Open a terminal.
-   - Navigate to the root directory of the project containing the Dockerfile.
-   - Build the Docker image:
-     ```
-     docker build -t bookstore-app .
-     ```
-   - Run the Docker container:
-     ```
-     docker run -d -p 8080:80 --name bookstore-container bookstore-app
-     ```
-   - The application will be accessible at `http://localhost:8080`.
-
 ## Running Tests
 
 ### Using Visual Studio 2022
 
 1. **Running Unit Tests:**
    - In Visual Studio, open the Test Explorer (`Test` -> `Test Explorer`).
-   - Click `Run All` to execute all unit tests.
-
-2. **Running Integration Tests:**
-   - Integration tests might require additional setup such as a test database or external services.
-   - Ensure the necessary dependencies are configured for integration testing.
-   - Run integration tests similarly in the Test Explorer.
+   - Click `Run All` to execute all unit tests and integration tests.
 
 ### Using Terminal
 
@@ -102,6 +80,6 @@ The application exposes several endpoints through the controller API. Here are s
 
 Make sure to adjust paths (`/api/book` and `/api/book/report`) and payload data according to your application's requirements and endpoints structure.
 
-**P.S**
+**P.S**-
 For better understading of the HTML element you can enter into [this url](https://www.freeformatter.com/html-formatter.html#before-output) and paste the server's response.
 For enhancing the visualization of the HTML element you can enter into [this url](https://html.onlineviewer.net/) and paste the server's response/the formatted text from the link from above this line.
