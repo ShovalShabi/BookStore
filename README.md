@@ -38,11 +38,11 @@ This repository contains a .NET application for managing books. It includes func
 
 The application exposes several endpoints through the controller API. Here are some examples:
 
-- **GET `/api/book/{isbn}`**
+- **GET `/api/Book/{isbn}`**
   - Retrieves a book by its ISBN.
-  - Example: `http://localhost:8080/api/book/9783161484100`
+  - Example: `http://localhost:8080/api/Book/9783161484100`
 
-- **POST `/api/book`**
+- **POST `/api/Book`**
   - Adds a new book.
   - Example payload:
     ```json
@@ -57,7 +57,7 @@ The application exposes several endpoints through the controller API. Here are s
     }
     ```
 
-- **PUT `/api/book/{isbn}`**
+- **PUT `/api/Book/{isbn}`**
   - Updates an existing book by its ISBN.
   - Example payload:
     ```json
@@ -71,14 +71,14 @@ The application exposes several endpoints through the controller API. Here are s
     }
     ```
 
-- **DELETE `/api/book/{isbn}`**
+- **DELETE `/api/Book/{isbn}`**
   - Deletes a book by its ISBN.
-  - Example: `http://localhost:8080/api/book/9783161484100`
+  - Example: `http://localhost:8080/api/Book/9783161484100`
 
-- **GET `/api/book/report`**
+- **GET `/api/Book/report`**
   - Generates an HTML report of all books.
 
-Make sure to adjust paths (`/api/book` and `/api/book/report`) and payload data according to your application's requirements and endpoints structure.
+Make sure to adjust paths (`/api/Book` and `/api/Book/report`) and payload data according to your application's requirements and endpoints structure.
 
 **P.S**-
 For better understading of the HTML element you can enter into [this url](https://www.freeformatter.com/html-formatter.html#before-output) and paste the server's response.
